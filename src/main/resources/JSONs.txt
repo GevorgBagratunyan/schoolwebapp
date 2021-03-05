@@ -1,0 +1,13 @@
+http://localhost:8080/admins/pupils/create
+{
+  "idCard" : "222555444",
+  "name" : "John Smith",
+  "classname" : "8a",
+  "mail" : "xxx@gmail.com"
+}
+
+http://localhost:8080/admins/pupils/set-mark/28
+{
+  "subject" : "math",
+  "mark" : 5
+}
