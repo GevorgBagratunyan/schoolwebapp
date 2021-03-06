@@ -1,5 +1,7 @@
 package com.gevbagratunyan.school.entity.models;
 
+import com.gevbagratunyan.school.entity.enums.Role;
+import javafx.beans.DefaultProperty;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -17,20 +19,24 @@ public class User {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @Column(name = "age")
-    private int age;
+    @Column(name = "username", nullable = false)
+    private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Column(name = "age")
+    private int age;
 
     @Column(name = "Email", nullable = false, unique = true)
     private String mail;
 
     @Column(name = "permissions")
     private String permissions = "";
+
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.GUEST;
 
     @Column(name = "Created_Date",nullable = false)
     private Date createdDate;
@@ -39,7 +45,7 @@ public class User {
     private Date updatedDate;
 
     @Column(name = "logged_in_state")
-    private boolean isLoggedIn;
+    private boolean isLoggedIn=false;
 
     public List<String> getPermissionsList(){
         if(permissions.length()>0){

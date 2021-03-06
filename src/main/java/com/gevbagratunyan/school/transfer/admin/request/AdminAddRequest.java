@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 public class AdminAddRequest {
     @NotEmpty(message = "Name should not be empty")
     @Size(min=3, max = 50, message = "Name size should  be between 3 and 50 chars")
-    private String name;
+    private String username;
 
     @NotEmpty(message = "Password cannot be empty")
     @Size(min = 8)

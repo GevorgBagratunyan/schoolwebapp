@@ -1,6 +1,5 @@
 package com.gevbagratunyan.school.service.services;
 
-import com.gevbagratunyan.school.entity.models.Admin;
 import com.gevbagratunyan.school.entity.models.User;
 import com.gevbagratunyan.school.repository.UserRepo;
 import com.gevbagratunyan.school.service.crud.CreateSupported;
@@ -12,6 +11,7 @@ import com.gevbagratunyan.school.transfer.user.request.UserUpdateRequest;
 import com.gevbagratunyan.school.transfer.user.response.UserResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -25,10 +25,12 @@ public class UserService implements CreateSupported<UserAddRequest, UserResponse
         DeleteSupported<Long> {
 
     private final UserRepo userRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepo userRepository) {
+    public UserService(UserRepo userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -77,8 +79,8 @@ public class UserService implements CreateSupported<UserAddRequest, UserResponse
 
 
 
-    public UserResponse getByEmailAndPassword(String mail, String password){
-        User user = userRepository.findByMailAndPassword(mail,password).
+    public UserResponse getByUsernameAndPassword(String username, String password){
+        User user = userRepository.findByUsernameAndPassword(username, passwordEncoder.encode(password)).
                 orElseThrow(() -> new NoSuchElementException("User not found"));
         UserResponse response = new UserResponse();
         BeanUtils.copyProperties(user,response);

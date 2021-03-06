@@ -10,6 +10,7 @@ import com.gevbagratunyan.school.transfer.admin.request.AdminAddRequest;
 import com.gevbagratunyan.school.transfer.admin.request.AdminUpdateRequest;
 import com.gevbagratunyan.school.transfer.admin.response.AdminResponse;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,15 +22,19 @@ public class AdminService implements CreateSupported<AdminAddRequest, AdminRespo
         ReadSupported<Long, AdminResponse>, DeleteSupported<Long> {
 
     private final AdminRepo adminRepository;
+    private PasswordEncoder passwordEncoder;
 
-    public AdminService(AdminRepo adminRepository) {
+    public AdminService(AdminRepo adminRepository, PasswordEncoder passwordEncoder) {
         this.adminRepository = adminRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public AdminResponse add(AdminAddRequest adminAddRequest) {
         Admin admin = new Admin();
-        BeanUtils.copyProperties(adminAddRequest, admin);
+        admin.setUsername(adminAddRequest.getUsername());
+        admin.setPassword(passwordEncoder.encode(adminAddRequest.getPassword()));
+        admin.setMail(adminAddRequest.getMail());
         Admin savedAdmin =  adminRepository.save(admin);
         AdminResponse adminResponse = new AdminResponse();
         BeanUtils.copyProperties(savedAdmin,adminResponse);
@@ -66,8 +71,8 @@ public class AdminService implements CreateSupported<AdminAddRequest, AdminRespo
         return response;
     }
 
-    public AdminResponse getByMailAndPassword(String mail, String password){
-        Admin admin = adminRepository.findByMailAndPassword(mail,password).
+    public AdminResponse getByUsernameAndPassword(String username, String password){
+        Admin admin = adminRepository.findByUsernameAndPassword(username,passwordEncoder.encode(password)).
                 orElseThrow(() -> new NoSuchElementException("Admin not found"));
         AdminResponse response = new AdminResponse();
         BeanUtils.copyProperties(admin,response);

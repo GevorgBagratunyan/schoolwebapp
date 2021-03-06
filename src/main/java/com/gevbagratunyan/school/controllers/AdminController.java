@@ -52,7 +52,7 @@ public class AdminController {
 	@PutMapping("/login")
 	public ResponseEntity<Void> login( @Valid @RequestBody AdminLoginRequest loginRequest) {
 	    try{
-            AdminResponse response = adminService.getByMailAndPassword(loginRequest.getMail(), loginRequest.getPassword());
+            AdminResponse response = adminService.getByUsernameAndPassword(loginRequest.getMail(), loginRequest.getPassword());
             adminService.setLoggedIn(response.getId(), true);
         } catch(NoSuchElementException e){
 	        return  ResponseEntity.notFound().build();
