@@ -13,9 +13,9 @@ import com.gevbagratunyan.school.service.crud.CreateSupported;
 import com.gevbagratunyan.school.service.crud.DeleteSupported;
 import com.gevbagratunyan.school.service.crud.ReadSupported;
 import com.gevbagratunyan.school.service.crud.UpdateSupported;
-import com.gevbagratunyan.school.transfer.admin.request.AdminEmployeeBankingUpdateRequest;
-import com.gevbagratunyan.school.transfer.admin.request.AdminEmployeeCreateRequest;
-import com.gevbagratunyan.school.transfer.admin.request.AdminEmployeeUpdateRequest;
+import com.gevbagratunyan.school.transfer.user.request.EmployeeBankingUpdateRequest;
+import com.gevbagratunyan.school.transfer.user.request.EmployeeCreateRequest;
+import com.gevbagratunyan.school.transfer.user.request.EmployeeUpdateRequest;
 import com.gevbagratunyan.school.transfer.employee.EmployeeResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -26,9 +26,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
-public class EmployeeService implements CreateSupported<AdminEmployeeCreateRequest,
+public class EmployeeService implements CreateSupported<EmployeeCreateRequest,
         EmployeeResponse>, ReadSupported<Long, EmployeeResponse>,
-        UpdateSupported<Long,AdminEmployeeUpdateRequest, EmployeeResponse>,
+        UpdateSupported<Long, EmployeeUpdateRequest, EmployeeResponse>,
         DeleteSupported<Long> {
 
     private final EmployeeRepo employeeRepository;
@@ -55,7 +55,7 @@ public class EmployeeService implements CreateSupported<AdminEmployeeCreateReque
 
     @Transactional
     @Override
-    public EmployeeResponse add(AdminEmployeeCreateRequest employeeCreateRequest) {
+    public EmployeeResponse add(EmployeeCreateRequest employeeCreateRequest) {
         Employee employee = new Employee();
         EmployeeBanking banking = new EmployeeBanking();
         employee.setSpecialization(Specialization.stringToEnum(employeeCreateRequest.getSpecialization()));
@@ -64,19 +64,19 @@ public class EmployeeService implements CreateSupported<AdminEmployeeCreateReque
         BeanUtils.copyProperties(employeeCreateRequest,banking);
         employee.setEmployeeBanking(banking);
         employee.setCreatedDate(new Date(System.currentTimeMillis()));
-        EmployeeBanking savedBanking = bankingRepository.save(banking);
         Employee savedEmployee =  employeeRepository.save(employee);
         EmployeeResponse response = new EmployeeResponse();
         BeanUtils.copyProperties(savedEmployee,response);
-        BeanUtils.copyProperties(savedBanking,response);
         response.setPosition(savedEmployee.getPosition().toString());
         response.setSpecialization(savedEmployee.getSpecialization().toString());
+        response.setBankCard(savedEmployee.getEmployeeBanking().getBankCard());
+        response.setSalary(employee.getEmployeeBanking().getSalary());
         return response;
     }
 
     @Transactional
     @Override
-    public EmployeeResponse update(Long id, AdminEmployeeUpdateRequest updateRequest) {
+    public EmployeeResponse update(Long id, EmployeeUpdateRequest updateRequest) {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Employee not found"));
 
@@ -112,7 +112,7 @@ public class EmployeeService implements CreateSupported<AdminEmployeeCreateReque
     }
 
     @Transactional
-    public EmployeeResponse updateBanking(Long id, AdminEmployeeBankingUpdateRequest updateRequest){
+    public EmployeeResponse updateBanking(Long id, EmployeeBankingUpdateRequest updateRequest){
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Employee not found"));
         EmployeeBanking banking = employee.getEmployeeBanking();

@@ -17,14 +17,19 @@ public class Pupil {
 
     @Column(name="ID_Card")
     private String idCard;
+
     @Column(name = "name", nullable = false)
     private String name;
+
     @Column(name = "Created_Date",nullable = false)
     private Date createdDate;
+
     @Column(name = "Updated_Date")
     private Date updatedDate;
+
     @Column(name = "eMail")
     private String mail;
+
     @Column(name="classRoom")
     private String classname;
 

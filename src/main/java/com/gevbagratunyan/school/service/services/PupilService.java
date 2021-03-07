@@ -9,9 +9,9 @@ import com.gevbagratunyan.school.service.crud.CreateSupported;
 import com.gevbagratunyan.school.service.crud.DeleteSupported;
 import com.gevbagratunyan.school.service.crud.ReadSupported;
 import com.gevbagratunyan.school.service.crud.UpdateSupported;
-import com.gevbagratunyan.school.transfer.admin.request.AdminPupilCreateRequest;
-import com.gevbagratunyan.school.transfer.admin.request.AdminPupilSetMarkRequest;
-import com.gevbagratunyan.school.transfer.admin.request.AdminPupilUpdateRequest;
+import com.gevbagratunyan.school.transfer.user.request.PupilCreateRequest;
+import com.gevbagratunyan.school.transfer.user.request.PupilSetMarkRequest;
+import com.gevbagratunyan.school.transfer.user.request.PupilUpdateRequest;
 import com.gevbagratunyan.school.transfer.pupil.PupilResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
-public class PupilService implements CreateSupported<AdminPupilCreateRequest,
+public class PupilService implements CreateSupported<PupilCreateRequest,
         PupilResponse>, ReadSupported<Long, PupilResponse>,
-        UpdateSupported<Long, AdminPupilUpdateRequest, PupilResponse>,
+        UpdateSupported<Long, PupilUpdateRequest, PupilResponse>,
         DeleteSupported<Long> {
 
     private final PupilRepo pupilRepository;
@@ -37,13 +37,13 @@ public class PupilService implements CreateSupported<AdminPupilCreateRequest,
 
 
     @Override
-    public PupilResponse add(AdminPupilCreateRequest adminPupilCreateRequest) {
+    public PupilResponse add(PupilCreateRequest pupilCreateRequest) {
         Pupil pupil = new Pupil();
         PupilYearMarks marks = new PupilYearMarks();
-        marks.setIdCard(adminPupilCreateRequest.getIdCard());
+        marks.setIdCard(pupilCreateRequest.getIdCard());
         pupil.setPupilYearMarks(marks);
         pupil.setCreatedDate(new Date(System.currentTimeMillis()));
-        BeanUtils.copyProperties(adminPupilCreateRequest, pupil);
+        BeanUtils.copyProperties(pupilCreateRequest, pupil);
         marksRepo.save(marks);
         Pupil savedPupil =  pupilRepository.save(pupil);
         PupilResponse response = new PupilResponse();
@@ -61,7 +61,7 @@ public class PupilService implements CreateSupported<AdminPupilCreateRequest,
     }
 
     @Override
-    public PupilResponse update(Long id, AdminPupilUpdateRequest updateRequest) {
+    public PupilResponse update(Long id, PupilUpdateRequest updateRequest) {
         Pupil pupil = pupilRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Pupil not found"));
         BeanUtils.copyProperties(updateRequest, pupil);
@@ -83,7 +83,7 @@ public class PupilService implements CreateSupported<AdminPupilCreateRequest,
 
 
 
-    public void setYearMark(Long id, AdminPupilSetMarkRequest markRequest){
+    public void setYearMark(Long id, PupilSetMarkRequest markRequest){
         Subject subject = Subject.stringToEnum(markRequest.getSubject());
         byte mark=markRequest.getMark();
         Pupil pupil = pupilRepository.findById(id)

@@ -1,16 +1,37 @@
 package com.gevbagratunyan.school.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.gevbagratunyan.school.service.services.UserService;
+import com.gevbagratunyan.school.transfer.user.request.LoginRequest;
+import com.gevbagratunyan.school.transfer.user.response.UserResponse;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/home")
+import javax.validation.Valid;
+import java.util.NoSuchElementException;
+
+@Controller
+@RequestMapping("/")
 public class HomeController {
+
+    UserService userService;
 
     @GetMapping
     public String homePage() {
-        return "Hi! You are on the HomePage";
+        return "index";
+    }
+
+    //DONE
+    @GetMapping("login")
+    public String login() {
+        return "login";
+    }
+
+    //DONE
+    @PutMapping("/logout/{id}")
+    public ResponseEntity<Void> logout(@PathVariable Long id) {
+        userService.setLoggedIn(id, false);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/authority1")

@@ -2,25 +2,21 @@ package com.gevbagratunyan.school.transfer.user.request;
 
 import lombok.Data;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Data
 public class UserAddRequest {
-
-    @NotEmpty
-    @Pattern(regexp = "[A-Za-z]+", message = "Your name must contain only letters")
-    private String name;
-
-    @NotEmpty
-    @Min(value = 7, message = "Your age must be greater than 6")
-    private int age;
+    @NotEmpty(message = "Name should not be empty")
+    @Size(min=3, max = 50, message = "Name size should  be between 3 and 50 chars")
+    private String username;
 
     @NotEmpty(message = "Password cannot be empty")
     @Size(min = 8)
     private String password;
 
     @NotEmpty
-    @Email(message = "Email should be in valid form")
+    @Email
     private String mail;
-
 }

@@ -1,7 +1,6 @@
 package com.gevbagratunyan.school.entity.models;
 
 import com.gevbagratunyan.school.entity.enums.Role;
-import javafx.beans.DefaultProperty;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,7 +18,7 @@ public class User {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     @Column(name = "password", nullable = false)

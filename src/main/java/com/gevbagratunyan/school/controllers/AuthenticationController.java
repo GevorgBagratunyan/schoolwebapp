@@ -1,6 +1,6 @@
 //package com.gevbagratunyan.school.controllers;
 //
-//import com.gevbagratunyan.school.service.security.AuthenticationService;
+//import com.gevbagratunyan.school.security.AuthenticationService;
 //import com.gevbagratunyan.school.transfer.admin.request.AdminLoginRequest;
 //import com.gevbagratunyan.school.transfer.user.request.UserLoginRequest;
 //import org.springframework.web.bind.annotation.*;
