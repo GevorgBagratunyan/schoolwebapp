@@ -31,13 +31,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/api/home/login").permitAll()
                 .antMatchers("/api/home").permitAll()
                 .antMatchers("/api/home/profile").authenticated()
                 .antMatchers("/api/admins/**").hasRole("ADMIN")
                 .antMatchers("/api/users/**").hasAnyRole("USER","ADMIN")
-                .antMatchers("/api/home/authority1").hasAnyAuthority("ACCESS_AUTHORITY1")
-                .antMatchers("/api/home/authority2").hasAnyAuthority("ACCESS_AUTHORITY2")
+                .antMatchers("/authority1").hasAnyAuthority("ACCESS_AUTHORITY1")
+                .antMatchers("/authority2").hasAnyAuthority("ACCESS_AUTHORITY2")
                 .and()
                 .formLogin().loginPage("/login").permitAll()
                 .and()
