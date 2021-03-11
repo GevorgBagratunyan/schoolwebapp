@@ -10,8 +10,6 @@ import javax.validation.constraints.NotEmpty;
 public class PupilSetMarkRequest {
     @NotEmpty
     private String subject;
-    @NotEmpty
-    @Min(value = 0)
-    @Max(value = 10)
-    private byte mark;
+    private Double mark;
+
 }

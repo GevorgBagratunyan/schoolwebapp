@@ -1,9 +1,9 @@
 package com.gevbagratunyan.school.service.services;
 
-import com.gevbagratunyan.school.entity.data.PupilYearMarks;
+import com.gevbagratunyan.school.entity.data.AllMarks;
+import com.gevbagratunyan.school.entity.data.FinalYearMarks;
 import com.gevbagratunyan.school.entity.enums.Subject;
 import com.gevbagratunyan.school.entity.models.Pupil;
-import com.gevbagratunyan.school.repository.MarksRepo;
 import com.gevbagratunyan.school.repository.PupilRepo;
 import com.gevbagratunyan.school.service.crud.CreateSupported;
 import com.gevbagratunyan.school.service.crud.DeleteSupported;
@@ -27,11 +27,9 @@ public class PupilService implements CreateSupported<PupilCreateRequest,
         DeleteSupported<Long> {
 
     private final PupilRepo pupilRepository;
-    private final MarksRepo marksRepo;
 
-    public PupilService(PupilRepo pupilRepository, MarksRepo marksRepo) {
+    public PupilService(PupilRepo pupilRepository) {
         this.pupilRepository = pupilRepository;
-        this.marksRepo = marksRepo;
     }
 
 
@@ -39,12 +37,12 @@ public class PupilService implements CreateSupported<PupilCreateRequest,
     @Override
     public PupilResponse add(PupilCreateRequest pupilCreateRequest) {
         Pupil pupil = new Pupil();
-        PupilYearMarks marks = new PupilYearMarks();
-        marks.setIdCard(pupilCreateRequest.getIdCard());
-        pupil.setPupilYearMarks(marks);
+        FinalYearMarks marks = new FinalYearMarks();
+        AllMarks weekMarks = new AllMarks();
+        pupil.setFinalYearMarks(marks);
+        pupil.setAllMarks(weekMarks);
         pupil.setCreatedDate(new Date(System.currentTimeMillis()));
         BeanUtils.copyProperties(pupilCreateRequest, pupil);
-        marksRepo.save(marks);
         Pupil savedPupil =  pupilRepository.save(pupil);
         PupilResponse response = new PupilResponse();
         BeanUtils.copyProperties(savedPupil,response);
@@ -83,49 +81,21 @@ public class PupilService implements CreateSupported<PupilCreateRequest,
 
 
 
-    public void setYearMark(Long id, PupilSetMarkRequest markRequest){
-        Subject subject = Subject.stringToEnum(markRequest.getSubject());
-        byte mark=markRequest.getMark();
+    public void setYearMark(Long id, PupilSetMarkRequest setMarkRequest){
+        Subject subject = Subject.stringToEnum(setMarkRequest.getSubject());
         Pupil pupil = pupilRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Pupil not found"));
-        switch(subject){
-            case MATH:
-                pupil.getPupilYearMarks().setMATH(mark);
-                break;
-            case ENG:
-                pupil.getPupilYearMarks().setENG(mark);
-                break;
-            case RUS:
-                pupil.getPupilYearMarks().setRUS(mark);
-                break;
-            case ARM:
-                pupil.getPupilYearMarks().setARM(mark);
-                break;
-            case CHEM:
-                pupil.getPupilYearMarks().setCHEM(mark);
-                break;
-            case PHYS:
-                pupil.getPupilYearMarks().setPHYS(mark);
-                break;
-            case GEOM:
-                pupil.getPupilYearMarks().setGEOM(mark);
-                break;
-            case GEOG:
-                pupil.getPupilYearMarks().setGEOG(mark);
-                break;
-            case BIOL:
-                pupil.getPupilYearMarks().setBIOL(mark);
-                break;
-            case HIST:
-                pupil.getPupilYearMarks().setHIST(mark);
-                break;
-            case ARM_HIST:
-                pupil.getPupilYearMarks().setARM_HIST(mark);
-                break;
-            default: throw new IllegalArgumentException();
-        }
-        pupil.getPupilYearMarks().initMarks();
-        marksRepo.save(pupil.getPupilYearMarks());
+        Double mark = pupil.getAllMarks().calculateAVG(subject);
+        pupil.getFinalYearMarks().setYearMark(subject, mark);
+        pupilRepository.save(pupil);
+    }
+
+    public void setMark(Long id, PupilSetMarkRequest setMarkRequest){
+        Double mark = setMarkRequest.getMark();
+        Subject subject = Subject.stringToEnum(setMarkRequest.getSubject());
+        Pupil pupil = pupilRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Pupil not found"));
+        pupil.getAllMarks().setMark(subject,mark);
     }
 
     public List<Pupil> getAllPupils(){

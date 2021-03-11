@@ -108,7 +108,7 @@ public class UserController {
 
 	//DONE
 	@PutMapping("pupils/set-mark/{id}")
-	public ResponseEntity<Void> setMark(@PathVariable Long id, @Valid @RequestBody PupilSetMarkRequest setMarkRequest) {
+	public ResponseEntity<Void> setYearMark(@PathVariable Long id, @Valid @RequestBody PupilSetMarkRequest setMarkRequest) {
 		pupilService.setYearMark(id,setMarkRequest);
 		return ResponseEntity.ok().build();
 	}

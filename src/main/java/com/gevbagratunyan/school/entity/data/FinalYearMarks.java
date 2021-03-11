@@ -9,30 +9,27 @@ import java.util.Map;
 
 @Entity
 @Data
-public class PupilYearMarks {
+public class FinalYearMarks {
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(name="ID_Card")
-    private String idCard;
-
-    private byte MATH;
-    private byte ENG;
-    private byte RUS;
-    private byte ARM;
-    private byte CHEM;
-    private byte PHYS;
-    private byte GEOM;
-    private byte GEOG;
-    private byte BIOL;
-    private byte HIST;
-    private byte ARM_HIST;
+    private Double MATH;
+    private Double ENG;
+    private Double RUS;
+    private Double ARM;
+    private Double CHEM;
+    private Double PHYS;
+    private Double GEOM;
+    private Double GEOG;
+    private Double BIOL;
+    private Double HIST;
+    private Double ARM_HIST;
 
     @Transient
-    private Map<String, Byte> marksList = new HashMap<>();
+    private Map<String, Double> marksList = new HashMap<>();
 
-    public void setMark(Subject subject, byte mark){
+    public void setYearMark(Subject subject, Double mark){
         switch(subject){
             case MATH:
                 MATH=mark;
@@ -67,10 +64,11 @@ public class PupilYearMarks {
             case ARM_HIST:
                 ARM_HIST=mark;
                 break;
+            default: throw new  IllegalArgumentException();
         }
     }
 
-    public Map<String,Byte> initMarks(){
+    public Map<String,Double> initMarks(){
         marksList.put("Mathematics", MATH);
         marksList.put("English language", ENG);
         marksList.put("Russian language", RUS);

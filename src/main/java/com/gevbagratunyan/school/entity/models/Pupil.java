@@ -1,7 +1,8 @@
 package com.gevbagratunyan.school.entity.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.gevbagratunyan.school.entity.data.PupilYearMarks;
+import com.gevbagratunyan.school.entity.data.AllMarks;
+import com.gevbagratunyan.school.entity.data.FinalYearMarks;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -9,7 +10,7 @@ import java.sql.Date;
 
 @Entity
 @Data
-@JsonIgnoreProperties({"id", "pupilYearMarks" })
+@JsonIgnoreProperties({"id", "finalYearMarks","allMarks" })
 public class Pupil {
     @Id
     @GeneratedValue
@@ -34,5 +35,10 @@ public class Pupil {
     private String classname;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private PupilYearMarks pupilYearMarks;
+    @JoinColumn(name = "yearmarks_id")
+    private FinalYearMarks finalYearMarks;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "allmarks_id")
+    private AllMarks allMarks;
 }

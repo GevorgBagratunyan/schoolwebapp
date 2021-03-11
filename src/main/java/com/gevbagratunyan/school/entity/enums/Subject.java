@@ -19,7 +19,8 @@ public enum Subject {
         this.subject = subject;
     }
 
-    public String getSubjectString() {
+    @Override
+    public String toString() {
         return subject;
     }
 

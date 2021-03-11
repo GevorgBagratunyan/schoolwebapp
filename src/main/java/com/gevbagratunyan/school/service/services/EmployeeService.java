@@ -7,7 +7,6 @@ import com.gevbagratunyan.school.entity.data.EmployeeBanking;
 import com.gevbagratunyan.school.entity.enums.Position;
 import com.gevbagratunyan.school.entity.enums.Specialization;
 import com.gevbagratunyan.school.entity.models.Employee;
-import com.gevbagratunyan.school.repository.BankingRepo;
 import com.gevbagratunyan.school.repository.EmployeeRepo;
 import com.gevbagratunyan.school.service.crud.CreateSupported;
 import com.gevbagratunyan.school.service.crud.DeleteSupported;
@@ -32,11 +31,9 @@ public class EmployeeService implements CreateSupported<EmployeeCreateRequest,
         DeleteSupported<Long> {
 
     private final EmployeeRepo employeeRepository;
-    private final BankingRepo bankingRepository;
 
-    public EmployeeService(EmployeeRepo employeeRepository, BankingRepo bankingRepository) {
+    public EmployeeService(EmployeeRepo employeeRepository) {
         this.employeeRepository = employeeRepository;
-        this.bankingRepository = bankingRepository;
     }
 
 

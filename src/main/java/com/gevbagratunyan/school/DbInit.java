@@ -1,34 +1,51 @@
 package com.gevbagratunyan.school;
 
-import com.gevbagratunyan.school.entity.data.EmployeeBanking;
-import com.gevbagratunyan.school.entity.enums.Position;
-import com.gevbagratunyan.school.entity.enums.Role;
-import com.gevbagratunyan.school.entity.enums.Specialization;
-import com.gevbagratunyan.school.entity.models.Employee;
-import com.gevbagratunyan.school.entity.models.User;
 import com.gevbagratunyan.school.repository.EmployeeRepo;
+import com.gevbagratunyan.school.repository.PupilRepo;
 import com.gevbagratunyan.school.repository.UserRepo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-
 @Service
 public class DbInit implements CommandLineRunner {
 
     private UserRepo userRepo;
+    private PupilRepo pupilRepo;
     private EmployeeRepo employeeRepo;
     private PasswordEncoder passwordEncoder;
 
-    public DbInit(UserRepo userRepo, PasswordEncoder passwordEncoder, EmployeeRepo employeeRepo) {
+    public DbInit(UserRepo userRepo, PasswordEncoder passwordEncoder, EmployeeRepo employeeRepo, PupilRepo pupilRepo) {
         this.userRepo = userRepo;
+        this.pupilRepo=pupilRepo;
         this.passwordEncoder = passwordEncoder;
         this.employeeRepo=employeeRepo;
     }
 
     @Override
     public void run(String... args) {
+
+
+//        Pupil pupil=new Pupil();
+//        FinalYearMarks yearMarks=new FinalYearMarks();
+//        CurrentMarks weekMarks=new CurrentMarks();
+//
+//        pupil.setCurrentMarks(weekMarks);
+//        pupil.setFinalYearMarks(yearMarks);
+//        pupil.setClassname("7a");
+//        pupil.setIdCard("0012475613");
+//        pupil.setName("TestAVG Marks");
+//        pupil.setMail("AvgMarks@mail.ru");
+//        pupil.setCreatedDate(new Date(System.currentTimeMillis()));
+//        weekMarks.getARM().put(new Timestamp(System.currentTimeMillis()), 7.0);
+//        Thread.sleep(300);
+//        weekMarks.getARM().put(new Timestamp(System.currentTimeMillis()), 8.0);
+//        Thread.sleep(300);
+//        weekMarks.getARM().put(new Timestamp(System.currentTimeMillis()), 10.0);
+//        Thread.sleep(300);
+//        Double avg = weekMarks.calculateAVG(Subject.ARM);
+//        yearMarks.setYearMark(Subject.ARM,avg);
+//        pupilRepo.save(pupil);
 
 //        Employee employee = new Employee();
 //        EmployeeBanking banking=new EmployeeBanking();
