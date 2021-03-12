@@ -10,7 +10,7 @@ public class EmployeeResponse {
     private String mail;
     private String position;
     private String specialization;
-    private int salary;
+    private double salary;
     private String bankCard;
     private int balance;
 }

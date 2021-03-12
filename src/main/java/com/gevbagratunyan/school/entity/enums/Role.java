@@ -3,7 +3,7 @@ package com.gevbagratunyan.school.entity.enums;
 public enum Role {
     ADMIN("ADMIN"),
     USER("USER"),
-    GUEST("GUEST");
+    MANAGER("MANAGER");
 
     String role;
 
@@ -26,7 +26,7 @@ public enum Role {
             r=Role.USER;
                 break;
             case "GUEST":
-            r=Role.GUEST;
+            r=Role.MANAGER;
                 break;
             default: throw new IllegalArgumentException("invalid role type");
         }

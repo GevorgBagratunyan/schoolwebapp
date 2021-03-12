@@ -19,7 +19,7 @@ public class EmployeeCreateRequest {
     private String position;
     private String specialization;
     @Min(value = 0)
-    private int salary;
+    private double salary;
     @Size(min=15,max=15, message = "not valid card number")
     @Pattern(regexp = "^[0-9-]*$",message = "not valid card number")
     private String bankCard;

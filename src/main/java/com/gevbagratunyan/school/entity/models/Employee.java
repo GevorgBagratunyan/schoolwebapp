@@ -9,6 +9,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -25,6 +26,9 @@ public class Employee {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "birth_date", nullable = false)
+    private LocalDate birthDate;
 
     @Column(name = "Email", unique = true)
     private String mail;

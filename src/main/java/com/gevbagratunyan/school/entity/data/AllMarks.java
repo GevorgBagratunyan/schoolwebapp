@@ -4,7 +4,6 @@ import com.gevbagratunyan.school.entity.enums.Subject;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
