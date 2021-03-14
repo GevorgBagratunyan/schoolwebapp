@@ -12,5 +12,5 @@ public class EmployeeResponse {
     private String specialization;
     private double salary;
     private String bankCard;
-    private int balance;
+    private double balance;
 }

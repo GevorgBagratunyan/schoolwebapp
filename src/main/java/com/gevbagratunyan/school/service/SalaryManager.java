@@ -2,10 +2,12 @@ package com.gevbagratunyan.school.service;
 
 
 import com.gevbagratunyan.school.entity.models.Employee;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
 
+@Service
 public class SalaryManager {
 
     public double vacationSalary(Employee employee, int vacationDays){

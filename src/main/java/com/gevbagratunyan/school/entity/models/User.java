@@ -35,7 +35,7 @@ public class User {
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    private Role role = Role.GUEST;
+    private Role role;
 
     @Column(name = "Created_Date",nullable = false)
     private Date createdDate;

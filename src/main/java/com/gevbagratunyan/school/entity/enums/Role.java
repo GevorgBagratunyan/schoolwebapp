@@ -25,7 +25,7 @@ public enum Role {
             case "USER":
             r=Role.USER;
                 break;
-            case "GUEST":
+            case "MANAGER":
             r=Role.MANAGER;
                 break;
             default: throw new IllegalArgumentException("invalid role type");
