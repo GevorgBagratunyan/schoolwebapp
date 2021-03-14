@@ -1,4 +1,4 @@
-package com.gevbagratunyan.school.service;
+package com.gevbagratunyan.school.service.managers;
 
 
 import com.gevbagratunyan.school.entity.models.Employee;
@@ -10,7 +10,9 @@ import java.time.Period;
 @Service
 public class SalaryManager {
 
-    public double vacationSalary(Employee employee, int vacationDays){
+    public double vacationSalary(Employee employee){
+        Period diff = Period.between(employee.getEmployeeBanking().getVacationStartDate(), employee.getEmployeeBanking().getVacationEndDate());
+        int vacationDays = diff.getDays();
         double taskedSalary = calcSalary(employee,vacationDays);
         double vacationSalary = (taskedSalary*80)/100;
         return vacationSalary;

@@ -17,10 +17,13 @@ import com.gevbagratunyan.school.transfer.user.request.EmployeeCreateRequest;
 import com.gevbagratunyan.school.transfer.user.request.EmployeeUpdateRequest;
 import com.gevbagratunyan.school.transfer.employee.EmployeeResponse;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -140,6 +143,21 @@ public class EmployeeService implements CreateSupported<EmployeeCreateRequest,
 
     public List<Employee> getAllEmployees(){
         return employeeRepository.findAll();
+    }
+
+    public int getVacationDays(Long id){
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(()-> new UsernameNotFoundException("Employee not found"));
+        Period diff = Period.between(employee.getEmployeeBanking().getVacationStartDate(), employee.getEmployeeBanking().getVacationEndDate());
+        int vacationDays = diff.getDays();
+        return vacationDays;
+    }
+
+    public void setVacation(Long id, boolean inVacation){
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(()-> new UsernameNotFoundException("Employee not found"));
+        employee.getEmployeeBanking().setInVacation(inVacation);
+        employeeRepository.save(employee);
     }
 
 }

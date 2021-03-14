@@ -3,6 +3,7 @@ package com.gevbagratunyan.school.entity.data;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -21,6 +22,15 @@ public class EmployeeBanking {
 
     @Column(name = "Balance")
     private double balance;
+
+    @Column(name = "Vacation_Start_Date")
+    private LocalDate vacationStartDate;
+
+    @Column(name = "Vacation_End_Date")
+    private LocalDate vacationEndDate;
+
+    @Column(name = "In_Vacation")
+    private boolean inVacation = false;
 
     public double addToBalance(double money){
         return balance+=money;

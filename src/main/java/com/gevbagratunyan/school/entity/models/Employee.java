@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gevbagratunyan.school.entity.data.EmployeeBanking;
 import com.gevbagratunyan.school.entity.enums.Position;
 import com.gevbagratunyan.school.entity.enums.Specialization;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;

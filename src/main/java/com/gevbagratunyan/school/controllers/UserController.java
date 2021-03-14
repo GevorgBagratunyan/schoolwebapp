@@ -107,9 +107,22 @@ public class UserController {
 	}
 
 	//DONE
-	@PutMapping("pupils/set-mark/{id}")
+	@PutMapping("/pupils/set-year-mark/{id}")
 	public ResponseEntity<Void> setYearMark(@PathVariable Long id, @Valid @RequestBody PupilSetMarkRequest setMarkRequest) {
 		pupilService.setYearMark(id,setMarkRequest);
+		return ResponseEntity.ok().build();
+	}
+
+	//DONE
+	@PutMapping("/pupils/set-all-year-marks/{id}")
+	public ResponseEntity<Void> setAllYearMarks(@PathVariable Long id) {
+		pupilService.setAllYearMarks(id);
+		return ResponseEntity.ok().build();
+	}
+
+	@PutMapping("/pupils/set-amark/{id}")
+	public ResponseEntity<Void> setMark(@PathVariable Long id, @Valid @RequestBody PupilSetMarkRequest setMarkRequest) {
+		pupilService.setMark(id,setMarkRequest);
 		return ResponseEntity.ok().build();
 	}
 

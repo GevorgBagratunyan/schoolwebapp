@@ -2,7 +2,7 @@ package com.gevbagratunyan.school.service.services;
 
 import com.gevbagratunyan.school.entity.models.Employee;
 import com.gevbagratunyan.school.repository.EmployeeRepo;
-import com.gevbagratunyan.school.service.SalaryManager;
+import com.gevbagratunyan.school.service.managers.SalaryManager;
 import com.gevbagratunyan.school.transfer.employee.EmployeeResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,6 +27,7 @@ public class ManagerService {
         double salary = salaryManager.calcSalary(employee,workDays);
         employee.getEmployeeBanking().addToBalance(salary);
         Employee savedEmployee = employeeRepo.save(employee);
+
         EmployeeResponse response = new EmployeeResponse();
         BeanUtils.copyProperties(savedEmployee, response);
         BeanUtils.copyProperties(savedEmployee.getEmployeeBanking(), response);
@@ -35,12 +36,13 @@ public class ManagerService {
         return response;
     }
 
-    public EmployeeResponse giveVacationSalary(Long id, int vacationDays){
+    public EmployeeResponse giveVacationSalary(Long id){
         Employee employee = employeeRepo.findById(id)
                 .orElseThrow(()-> new UsernameNotFoundException("Employee not found"));
-        double salary = salaryManager.vacationSalary(employee,vacationDays);
+        double salary = salaryManager.vacationSalary(employee);
         employee.getEmployeeBanking().addToBalance(salary);
         Employee savedEmployee = employeeRepo.save(employee);
+
         EmployeeResponse response = new EmployeeResponse();
         BeanUtils.copyProperties(savedEmployee, response);
         BeanUtils.copyProperties(savedEmployee.getEmployeeBanking(), response);

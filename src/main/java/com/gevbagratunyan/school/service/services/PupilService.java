@@ -9,6 +9,7 @@ import com.gevbagratunyan.school.service.crud.CreateSupported;
 import com.gevbagratunyan.school.service.crud.DeleteSupported;
 import com.gevbagratunyan.school.service.crud.ReadSupported;
 import com.gevbagratunyan.school.service.crud.UpdateSupported;
+import com.gevbagratunyan.school.service.managers.MarksManager;
 import com.gevbagratunyan.school.transfer.user.request.PupilCreateRequest;
 import com.gevbagratunyan.school.transfer.user.request.PupilSetMarkRequest;
 import com.gevbagratunyan.school.transfer.user.request.PupilUpdateRequest;
@@ -27,9 +28,11 @@ public class PupilService implements CreateSupported<PupilCreateRequest,
         DeleteSupported<Long> {
 
     private final PupilRepo pupilRepository;
+    private MarksManager marksManager;
 
-    public PupilService(PupilRepo pupilRepository) {
+    public PupilService(PupilRepo pupilRepository, MarksManager marksManager) {
         this.pupilRepository = pupilRepository;
+        this.marksManager = marksManager;
     }
 
 
@@ -85,8 +88,8 @@ public class PupilService implements CreateSupported<PupilCreateRequest,
         Subject subject = Subject.stringToEnum(setMarkRequest.getSubject());
         Pupil pupil = pupilRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Pupil not found"));
-        Double mark = pupil.getAllMarks().calculateAVG(subject);
-        pupil.getFinalYearMarks().setYearMark(subject, mark);
+        Double mark = marksManager.calcYearMark(pupil.getAllMarks(), subject);
+        marksManager.initYearMark(pupil.getFinalYearMarks(), subject, mark);
         pupilRepository.save(pupil);
     }
 
@@ -95,7 +98,15 @@ public class PupilService implements CreateSupported<PupilCreateRequest,
         Subject subject = Subject.stringToEnum(setMarkRequest.getSubject());
         Pupil pupil = pupilRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Pupil not found"));
-        pupil.getAllMarks().setMark(subject,mark);
+        marksManager.initMark(pupil.getAllMarks(),subject,mark);
+        pupilRepository.save(pupil);
+    }
+
+    public void setAllYearMarks(Long id){
+        Pupil pupil = pupilRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Pupil not found"));
+        marksManager.initAllYearMarks(pupil.getFinalYearMarks(), pupil.getAllMarks());
+        pupilRepository.save(pupil);
     }
 
     public List<Pupil> getAllPupils(){
