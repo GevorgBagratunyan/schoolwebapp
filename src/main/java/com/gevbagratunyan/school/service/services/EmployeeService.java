@@ -60,9 +60,13 @@ public class EmployeeService implements CreateSupported<EmployeeCreateRequest,
         EmployeeBanking banking = new EmployeeBanking();
         employee.setSpecialization(Specialization.stringToEnum(employeeCreateRequest.getSpecialization()));
         employee.setPosition(Position.stringToEnum(employeeCreateRequest.getPosition()));
+
+        LocalDate birthDate = createBirthDate(employeeCreateRequest.getBirthDate());
+
         BeanUtils.copyProperties(employeeCreateRequest, employee);
         BeanUtils.copyProperties(employeeCreateRequest,banking);
         employee.setEmployeeBanking(banking);
+        employee.setBirthDate(birthDate);
         employee.setCreatedDate(new Date(System.currentTimeMillis()));
         Employee savedEmployee =  employeeRepository.save(employee);
         EmployeeResponse response = new EmployeeResponse();
@@ -158,6 +162,16 @@ public class EmployeeService implements CreateSupported<EmployeeCreateRequest,
                 .orElseThrow(()-> new UsernameNotFoundException("Employee not found"));
         employee.getEmployeeBanking().setInVacation(inVacation);
         employeeRepository.save(employee);
+    }
+
+    private LocalDate createBirthDate(String birthDate){
+
+        String[] bd = birthDate.split(",");
+        int[] bdt = new int[3];
+        for(int i=0;i<3;i++){
+            bdt[i] = Integer.parseInt(bd[i]);
+        }
+        return LocalDate.of(bdt[0], bdt[1], bdt[2]);
     }
 
 }

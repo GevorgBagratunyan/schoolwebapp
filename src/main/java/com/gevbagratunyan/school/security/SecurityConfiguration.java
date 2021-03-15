@@ -23,26 +23,38 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) {
-       auth.authenticationProvider(daoAuthenticationProvider());
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+        auth.inMemoryAuthentication()
+                .withUser("TestUser4").password(passwordEncoder().encode("123456789")).roles("ADMIN", "USER");
+
+//       auth.authenticationProvider(daoAuthenticationProvider());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http
+                .httpBasic()
+                .and()
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers("/**").permitAll()
                 .antMatchers("/profile").authenticated()
-                .antMatchers("/api/admins/**").hasRole("ADMIN")
+                .antMatchers("/**").hasRole("ADMIN")
                 .antMatchers("/api/users/**").hasAnyRole("USER","ADMIN")
                 .antMatchers("/authority1").hasAnyAuthority("ACCESS_AUTHORITY1")
                 .antMatchers("/authority2").hasAnyAuthority("ACCESS_AUTHORITY2")
                 .antMatchers("/manager/**").hasRole("MANAGER")
                 .and()
-                .formLogin().loginPage("/login").permitAll()
-                .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login");
+                .formLogin().disable()
+                .csrf().disable();
+
+
+//                .loginPage("/login").permitAll()
+//                .and()
+//                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+//                .logoutSuccessUrl("/login");
+
+
 //                .and()
 //                .rememberMe().tokenValiditySeconds(2952000).userDetailsService(myUserDetailsService);
     }
