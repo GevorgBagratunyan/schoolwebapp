@@ -113,6 +113,12 @@ public class PupilService implements CreateSupported<PupilCreateRequest,
         pupilRepository.save(pupil);
     }
 
+    public AllMarks getCurrentMarks(Long id){
+        Pupil pupil = pupilRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Pupil not found"));
+        return pupil.getAllMarks();
+    }
+
     public List<Pupil> getAllPupils(){
         return pupilRepository.findAll();
     }

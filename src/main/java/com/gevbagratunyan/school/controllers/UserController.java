@@ -1,5 +1,6 @@
 package com.gevbagratunyan.school.controllers;
 
+import com.gevbagratunyan.school.entity.data.AllMarks;
 import com.gevbagratunyan.school.entity.models.Employee;
 import com.gevbagratunyan.school.entity.models.Pupil;
 import com.gevbagratunyan.school.entity.models.User;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.validation.Valid;
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Validated
@@ -112,20 +115,24 @@ public class UserController {
 		return ResponseEntity.ok().build();
 	}
 
-	//DONE
+	@GetMapping("/pupils/get-current-marks/{id}")
+	public ResponseEntity<AllMarks> getCurrentMarks(@PathVariable Long id){
+		AllMarks marks = pupilService.getCurrentMarks(id);
+		return new ResponseEntity<>(marks,HttpStatus.OK);
+	}
+
 	@DeleteMapping("pupils/delete/{id}")
 	public ResponseEntity<Void> deletePupil(@PathVariable Long id){
 		pupilService.delete(id);
 		return ResponseEntity.ok().build();
 	}
 
-	//DONE
 	@GetMapping("/pupils/all")
-	public List<Pupil> getAllPupils(){
-		return pupilService.getAllPupils();
+	public ResponseEntity<List<Pupil>> getAllPupils(){
+		List<Pupil> pupils = pupilService.getAllPupils();
+		return new ResponseEntity<>(pupils, HttpStatus.OK);
 	}
 
-	//DONE
 	@PutMapping("/pupils/update/{id}")
 	public PupilResponse updatePupil(@PathVariable Long id, @Valid @RequestBody PupilUpdateRequest updateRequest){
 		return pupilService.update(id, updateRequest);
@@ -134,7 +141,6 @@ public class UserController {
 
 	           //*************************EMPLOYEE********************//
 
-	//DONE
 	@GetMapping("/employees/{id}")
 	public EmployeeResponse getEmployee(@PathVariable Long id) {
 		return employeeService.get(id);
@@ -149,20 +155,17 @@ public class UserController {
 //		return ResponseEntity.ok(employees);
 	}
 
-	//DONE
 	@PostMapping("/employees/create")
 	public EmployeeResponse createEmployee( @Valid @RequestBody EmployeeCreateRequest employeeCreateRequest) {
 		return employeeService.add(employeeCreateRequest);
 	}
 
-	//DONE
 	@DeleteMapping("/employees/delete/{id}")
 	public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
 		employeeService.delete(id);
 		return ResponseEntity.ok().build();
 	}
 
-	//DONE
 	@PutMapping("employees/update/{id}")
 	public EmployeeResponse updateEmployee(@PathVariable Long id, @Valid @RequestBody EmployeeUpdateRequest updateRequest) {
 		return employeeService.update(id,updateRequest);
