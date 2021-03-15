@@ -1,13 +1,11 @@
-http://localhost:8080/admins/pupils/create
+localhost:8080/api/employees/create
 {
-  "idCard" : "222555444",
-  "name" : "John Smith",
-  "classname" : "8a",
-  "mail" : "xxx@gmail.com"
-}
-
-http://localhost:8080/admins/pupils/set-mark/28
-{
-  "subject" : "math",
-  "mark" : 5
+    "name" : "Testing Employee3",
+    "mail" : "employee3@mail.ru",
+    "idCard" : "0012123458",
+    "birthDate" : "1964,8,7",
+    "position" : "director",
+    "specialization" : "russian",
+    "salary" : 124000.0,
+    "bankCard" : "0000-0000-4567-1234"
 }
