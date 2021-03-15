@@ -1,5 +1,6 @@
 package com.gevbagratunyan.school.service.services;
 
+import com.gevbagratunyan.school.entity.enums.Role;
 import com.gevbagratunyan.school.entity.models.User;
 import com.gevbagratunyan.school.repository.UserRepo;
 import com.gevbagratunyan.school.service.crud.CreateSupported;
@@ -13,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -35,9 +37,15 @@ public class UserService implements CreateSupported<UserAddRequest, UserResponse
         user.setUsername(userAddRequest.getUsername());
         user.setPassword(passwordEncoder.encode(userAddRequest.getPassword()));
         user.setMail(userAddRequest.getMail());
+        user.setCreatedDate(new Date(System.currentTimeMillis()));
+        user.setRole(Role.stringToEnum(userAddRequest.getRole()));
+        user.setPermissions(userAddRequest.getPermissions());
+        user.setAge(userAddRequest.getAge());
+
         User savedUser =  userRepo.save(user);
         UserResponse userResponse = new UserResponse();
         BeanUtils.copyProperties(savedUser, userResponse);
+        userResponse.setRole(savedUser.getRole().toString());
         return userResponse;
     }
 
@@ -57,6 +65,7 @@ public class UserService implements CreateSupported<UserAddRequest, UserResponse
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
         UserResponse response = new UserResponse();
         BeanUtils.copyProperties(user, response);
+        response.setRole(user.getRole().toString());
         return response;
     }
 

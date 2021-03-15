@@ -6,5 +6,7 @@ import lombok.Data;
 public class UserResponse {
     private Long id;
     private String username;
+    private int age;
     private String mail;
+    private String role;
 }

@@ -2,9 +2,7 @@ package com.gevbagratunyan.school.transfer.user.request;
 
 import lombok.Data;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Data
 public class UserAddRequest {
@@ -19,4 +17,13 @@ public class UserAddRequest {
     @NotEmpty
     @Email
     private String mail;
+
+    @NotEmpty
+    private String role;
+
+    private String permissions;
+
+    @NotNull
+    @Min(value = 12)
+    private int age;
 }

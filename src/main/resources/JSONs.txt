@@ -9,3 +9,15 @@ localhost:8080/api/employees/create
     "salary" : 124000.0,
     "bankCard" : "0000-0000-4567-1234"
 }
+
+
+localhost:8080/api/admins/create
+{
+    "username" : "Testing User1",
+    "mail" : "User1@mail.ru",
+    "password" : "qwerty1234",
+    "age" : 36,
+    "role" : "admin",
+    "permissions" : "ACCESS_AUTHORITY1"
+
+}

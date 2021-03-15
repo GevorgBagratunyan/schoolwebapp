@@ -1,5 +1,6 @@
 package com.gevbagratunyan.school.entity.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gevbagratunyan.school.entity.enums.Role;
 import lombok.Data;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Data
+@JsonIgnoreProperties({"id", "password", "permissionsList" })
 public class User {
 
     @Id

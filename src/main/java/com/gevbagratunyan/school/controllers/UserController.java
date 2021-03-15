@@ -40,58 +40,48 @@ public class UserController {
         return "Hi! You are on the Api Page";
     }
 
-                    //*************************USER********************//
+	@PostMapping("/create-profile")
+	public UserResponse addUser(@Valid @RequestBody UserAddRequest userAddRequest) {
+		return userService.add(userAddRequest);
+	}
+
+                   				 //*************************USER********************//
 
 
-	//DONE
 	@GetMapping("/admins/{id}")
 	public UserResponse getAdmin(@PathVariable Long id) {
 		return userService.get(id);
 	}
 
-	//??
+
 	@PostMapping("/admins/create")
 	public UserResponse addAdmin(@Valid @RequestBody UserAddRequest userAddRequest) {
 		return userService.add(userAddRequest);
 	}
 
-	@PutMapping("/admins/update/{id}")
-	public UserResponse updateAdmin(@PathVariable Long id, @Valid @RequestBody UserUpdateRequest updateRequest) {
-		return userService.update(id, updateRequest);
-	}
-
-	//DONE
 	@DeleteMapping("/admins/delete/{id}")
-	public ResponseEntity<Void> deleteAdmin(@PathVariable Long id) {
-		userService.delete(id);
-		return ResponseEntity.ok().build();
-	}
-
-	@DeleteMapping("/users/delete/{id}")
 	public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
 		userService.delete(id);
 		return ResponseEntity.ok().build();
 	}
 
-	//DONE
-	@PutMapping("/users/update/{id}")
-	public UserResponse updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateRequest updateRequest) {
-		return userService.update(id, updateRequest);
-	}
-	//DONE
-	@GetMapping("/users/{id}")
-	public UserResponse getUser(@PathVariable Long id) {
-		return userService.get(id);
-	}
-
-	//DONE
-	@GetMapping("/users/all")
+	@GetMapping("/admins/get-all-users")
 	public ResponseEntity<List<User>> getAllUsers() {
 		List<User>  users = userService.getAllUsers();
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 
-		//*************************PUPIL********************//
+	@PutMapping("/users/update/{id}")
+	public UserResponse updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateRequest updateRequest) {
+		return userService.update(id, updateRequest);
+	}
+
+	@GetMapping("/users/{id}")
+	public UserResponse getUser(@PathVariable Long id) {
+		return userService.get(id);
+	}
+
+								//*************************PUPIL********************//
 
 	//DONE
 	@GetMapping("/pupils/{id}")
