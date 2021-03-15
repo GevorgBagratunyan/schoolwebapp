@@ -19,56 +19,56 @@ public class AllMarks {
 
     @ElementCollection
     @CollectionTable(name = "Marks_Mathematics")
-    @MapKeyColumn(name = "Day_Of_Week")
+    @MapKeyColumn(name = "Date")
     private Map<Timestamp,Double> MATH = new HashMap<>();
 
     @ElementCollection
     @CollectionTable(name = "Marks_English")
-    @MapKeyColumn(name = "Day_Of_Week")
+    @MapKeyColumn(name = "Date")
     private Map<Timestamp,Double> ENG = new HashMap<>();
 
     @ElementCollection
     @CollectionTable(name = "Marks_Russian_Lang")
-    @MapKeyColumn(name = "Day_Of_Week")
+    @MapKeyColumn(name = "Date")
     private Map<Timestamp,Double> RUS = new HashMap<>();
 
     @ElementCollection
     @CollectionTable(name = "Marks_Armenian_Lang")
-    @MapKeyColumn(name = "Day_Of_Week")
+    @MapKeyColumn(name = "Date")
     private Map<Timestamp,Double> ARM = new HashMap();
 
     @ElementCollection
     @CollectionTable(name = "Marks_Chemistry")
-    @MapKeyColumn(name = "Day_Of_Week")
+    @MapKeyColumn(name = "Date")
     private Map<Timestamp,Double> CHEM = new HashMap<>();
 
     @ElementCollection
     @CollectionTable(name = "Marks_Physics")
-    @MapKeyColumn(name = "Day_Of_Week")
+    @MapKeyColumn(name = "Date")
     private Map<Timestamp,Double> PHYS = new HashMap<>();
 
     @ElementCollection
     @CollectionTable(name = "Marks_Geometry")
-    @MapKeyColumn(name = "Day_Of_Week")
+    @MapKeyColumn(name = "Date")
     private Map<Timestamp,Double> GEOM = new HashMap<>();
 
     @ElementCollection
     @CollectionTable(name = "Marks_Geography")
-    @MapKeyColumn(name = "Day_Of_Week")
+    @MapKeyColumn(name = "Date")
     private Map<Timestamp,Double> GEOG = new HashMap<>();
 
     @ElementCollection
     @CollectionTable(name = "Marks_Biology")
-    @MapKeyColumn(name = "Day_Of_Week")
+    @MapKeyColumn(name = "Date")
     private Map<Timestamp,Double> BIOL = new HashMap<>();
 
     @ElementCollection
     @CollectionTable(name = "Marks_History")
-    @MapKeyColumn(name = "Day_Of_Week")
+    @MapKeyColumn(name = "Date")
     private Map<Timestamp,Double> HIST = new HashMap<>();
 
     @ElementCollection
     @CollectionTable(name = "Marks_Armenian_History")
-    @MapKeyColumn(name = "Day_Of_Week")
+    @MapKeyColumn(name = "Date")
     private Map<Timestamp,Double> ARM_HIST = new HashMap<>();
 }

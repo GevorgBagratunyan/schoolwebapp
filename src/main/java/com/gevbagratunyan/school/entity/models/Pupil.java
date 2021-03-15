@@ -7,6 +7,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -21,6 +22,9 @@ public class Pupil {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "birth_date", nullable = false)
+    private LocalDate birthDate;
 
     @Column(name = "Created_Date",nullable = false)
     private Date createdDate;

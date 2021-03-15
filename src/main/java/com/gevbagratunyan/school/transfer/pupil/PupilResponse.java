@@ -6,6 +6,7 @@ import lombok.Data;
 public class PupilResponse {
     private String idCard;
     private String name;
+    private String birthDate;
     private String mail;
     private String classname;
 }

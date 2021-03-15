@@ -20,5 +20,7 @@ public class PupilCreateRequest {
     @NotEmpty
     @Email
     private String mail;
+    @NotEmpty
+    private String birthDate;
 
 }

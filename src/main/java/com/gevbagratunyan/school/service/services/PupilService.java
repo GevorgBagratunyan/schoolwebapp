@@ -18,6 +18,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -41,14 +42,17 @@ public class PupilService implements CreateSupported<PupilCreateRequest,
     public PupilResponse add(PupilCreateRequest pupilCreateRequest) {
         Pupil pupil = new Pupil();
         FinalYearMarks marks = new FinalYearMarks();
-        AllMarks weekMarks = new AllMarks();
+        AllMarks allMarks = new AllMarks();
         pupil.setFinalYearMarks(marks);
-        pupil.setAllMarks(weekMarks);
+        pupil.setAllMarks(allMarks);
         pupil.setCreatedDate(new Date(System.currentTimeMillis()));
+        LocalDate birthDate = createBirthDate(pupilCreateRequest.getBirthDate());
+        pupil.setBirthDate(birthDate);
         BeanUtils.copyProperties(pupilCreateRequest, pupil);
         Pupil savedPupil =  pupilRepository.save(pupil);
         PupilResponse response = new PupilResponse();
         BeanUtils.copyProperties(savedPupil,response);
+        response.setBirthDate(savedPupil.getBirthDate().toString());
         return response;
     }
 
@@ -111,5 +115,15 @@ public class PupilService implements CreateSupported<PupilCreateRequest,
 
     public List<Pupil> getAllPupils(){
         return pupilRepository.findAll();
+    }
+
+    private LocalDate createBirthDate(String birthDate){
+
+        String[] bd = birthDate.split(",");
+        int[] bdt = new int[3];
+        for(int i=0;i<3;i++){
+            bdt[i] = Integer.parseInt(bd[i]);
+        }
+        return LocalDate.of(bdt[0], bdt[1], bdt[2]);
     }
 }

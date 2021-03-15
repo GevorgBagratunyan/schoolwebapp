@@ -83,34 +83,30 @@ public class UserController {
 
 								//*************************PUPIL********************//
 
-	//DONE
 	@GetMapping("/pupils/{id}")
 	public PupilResponse getPupil(@PathVariable Long id) {
 		return pupilService.get(id);
 	}
 
-	//DONE
 	@PostMapping("pupils/create")
-	public ResponseEntity<Void> createPupil(@Valid @RequestBody PupilCreateRequest pupilCreateRequest) {
-		pupilService.add(pupilCreateRequest);
-		return ResponseEntity.ok().build();
+	public ResponseEntity<PupilResponse> createPupil(@Valid @RequestBody PupilCreateRequest pupilCreateRequest) {
+		PupilResponse response = pupilService.add(pupilCreateRequest);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	//DONE
 	@PutMapping("/pupils/set-year-mark/{id}")
 	public ResponseEntity<Void> setYearMark(@PathVariable Long id, @Valid @RequestBody PupilSetMarkRequest setMarkRequest) {
 		pupilService.setYearMark(id,setMarkRequest);
 		return ResponseEntity.ok().build();
 	}
 
-	//DONE
 	@PutMapping("/pupils/set-all-year-marks/{id}")
 	public ResponseEntity<Void> setAllYearMarks(@PathVariable Long id) {
 		pupilService.setAllYearMarks(id);
 		return ResponseEntity.ok().build();
 	}
 
-	@PutMapping("/pupils/set-amark/{id}")
+	@PutMapping("/pupils/set-mark/{id}")
 	public ResponseEntity<Void> setMark(@PathVariable Long id, @Valid @RequestBody PupilSetMarkRequest setMarkRequest) {
 		pupilService.setMark(id,setMarkRequest);
 		return ResponseEntity.ok().build();
