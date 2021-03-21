@@ -18,7 +18,8 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = this.userRepo.findByUsername(s);
+        User user = this.userRepo.findByUsername(s)
+                .orElseThrow(()->new UsernameNotFoundException("User Not Found"));
         user.setLoggedIn(true);
         userRepo.save(user);
         MyUserDetails userDetails = new MyUserDetails(user);

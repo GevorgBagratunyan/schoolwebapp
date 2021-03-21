@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @Validated
-@RequestMapping("/manager")
+@RequestMapping("/api/manager")
 public class ManagerController {
 
     private ManagerService managerService;
@@ -26,19 +26,18 @@ public class ManagerController {
         this.employeeService = employeeService;
     }
 
-    @PutMapping("/salary/give-salary/{id}")
-    public ResponseEntity<EmployeeResponse> giveSalary(@PathVariable Long id, @Valid @RequestBody GiveSalaryRequest salaryRequest){
-        EmployeeResponse response = managerService.giveSalary(id, salaryRequest.getWorkDays());
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @PutMapping("/give-salary/{id}")
+    public EmployeeResponse giveSalary(@PathVariable Long id, @Valid @RequestBody GiveSalaryRequest salaryRequest){
+        return managerService.giveSalary(id, salaryRequest.getWorkDays());
     }
 
-    @PutMapping("/salary/give-vacation-salary/{id}")
+    @PutMapping("/give-vacation-salary/{id}")
     public ResponseEntity<EmployeeResponse> giveVacationSalary(@PathVariable Long id){
         EmployeeResponse response = managerService.giveVacationSalary(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/balance/null-all-balances")
+    @PutMapping("/null-all-balances")
     public ResponseEntity<Void> nullAllBalancesAfterTransfer(){
         managerService.nullAllBalances();
         return ResponseEntity.ok().build();
@@ -56,16 +55,15 @@ public class ManagerController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/all-employees")
-    public ResponseEntity<List<Employee>> getAllEmployees(){
+    @GetMapping("")
+    public ResponseEntity<List<Employee>> getEmployees(){
         List<Employee> list = employeeService.getAllEmployees();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @GetMapping("/employee/{id}")
-    public ResponseEntity<EmployeeResponse> getEmployee(@PathVariable Long id){
-        EmployeeResponse response = employeeService.get(id);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @GetMapping("/{id}")
+    public EmployeeResponse getEmployee(@PathVariable Long id){
+        return employeeService.get(id);
     }
 
 }

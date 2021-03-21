@@ -1,6 +1,5 @@
 package com.gevbagratunyan.school.controllers;
 
-import com.gevbagratunyan.school.service.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -8,10 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @Validated
-@RequestMapping("/")
+@RequestMapping("api/home")
 public class HomeController {
-
-    UserService userService;
 
     @GetMapping
     public String homePage() {
