@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 public class LoginRequest {
     @NotEmpty
     @Email
-    private String mail;
+    private String username;
     @NotEmpty(message = "Password cannot be empty")
     @Size(min = 8)
     private String password;
