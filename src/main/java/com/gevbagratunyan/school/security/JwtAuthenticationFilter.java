@@ -54,7 +54,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         // Grab principal
-        UserDetails principal = (UserDetails) authResult.getPrincipal();
+        MyUserDetails principal = (MyUserDetails) authResult.getPrincipal();
 
         // Create JWT Token
         String token = JWT.create()
@@ -63,6 +63,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .sign(HMAC512(JwtProperties.SECRET.getBytes()));
 
         // Add token in response
-        response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX +  token);
+        response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX +token);
     }
 }

@@ -9,7 +9,6 @@ import javax.validation.constraints.Size;
 @Data
 public class LoginRequest {
     @NotEmpty
-    @Email
     private String username;
     @NotEmpty(message = "Password cannot be empty")
     @Size(min = 8)

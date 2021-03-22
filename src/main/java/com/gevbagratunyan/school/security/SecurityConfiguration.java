@@ -1,62 +1,53 @@
 package com.gevbagratunyan.school.security;
 
+import com.gevbagratunyan.school.repository.UserRepo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final MyUserDetailsService myUserDetailsService;
+    private MyUserDetailsService myUserDetailsService;
+    private UserRepo userRepo;
 
-    public SecurityConfiguration(MyUserDetailsService myUserDetailsService) {
+    public SecurityConfiguration(MyUserDetailsService myUserDetailsService, UserRepo userRepo) {
         this.myUserDetailsService = myUserDetailsService;
+        this.userRepo = userRepo;
     }
 
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-        auth.inMemoryAuthentication()
-                .withUser("TestUser4").password(passwordEncoder().encode("123456789")).roles("ADMIN", "USER");
-
-//       auth.authenticationProvider(daoAuthenticationProvider());
+        auth.authenticationProvider(daoAuthenticationProvider());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-                .httpBasic()
+                //remove csrf anf state in session, because in in JWT we dont need them
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.userRepo))
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
-                .antMatchers("/profile").authenticated()
-                .antMatchers("/**").hasRole("ADMIN")
-                .antMatchers("/api/users/**").hasAnyRole("USER","ADMIN")
-                .antMatchers("/authority1").hasAnyAuthority("ACCESS_AUTHORITY1")
-                .antMatchers("/authority2").hasAnyAuthority("ACCESS_AUTHORITY2")
-                .antMatchers("/manager/**").hasRole("MANAGER")
-                .and()
-                .formLogin().disable()
-                .csrf().disable();
-
-
-//                .loginPage("/login").permitAll()
-//                .and()
-//                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                .logoutSuccessUrl("/login");
-
-
-//                .and()
-//                .rememberMe().tokenValiditySeconds(2952000).userDetailsService(myUserDetailsService);
+                .antMatchers(HttpMethod.POST,"/login").permitAll()
+                .antMatchers("/api/admins/*").hasRole("ADMIN")
+                .antMatchers("/api/manager/*").hasRole("MANAGER")
+                .antMatchers("/api/users").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/api/employees").hasAnyRole("ADMIN", "MANAGER");
     }
 
     @Bean
